@@ -10,5 +10,5 @@ class Product extends Model
    
     public $table = 'products';
     public $timestamps = false;
-    public $guarded = [];
+    public $guarded = [];                                                                       
 }
