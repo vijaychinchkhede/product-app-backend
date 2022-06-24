@@ -25,6 +25,9 @@ use App\Http\Controllers\OrderController;
 
 Route::post('api/login', [UserController::class, 'login']);
 Route::post('api/register', [UserController::class, 'register']);
+Route::post('api/getalluser', [UserController::class, 'getAllUser']);
+Route::post('api/deleteuser', [UserController::class, 'deleteUser']);
+
 
 
 Route::post('api/getallproduct', [ProductController::class, 'getAllProduct']);
@@ -34,6 +37,10 @@ Route::post('api/addtocart', [ProductController::class, 'addToCart']);
 Route::post('api/getproductdetailsbyid', [ProductController::class, 'getProductDetailsById']);
 Route::post('api/updateproductdetails', [ProductController::class, 'updateProductDetails']);
 Route::post('api/deleteproduct', [ProductController::class, 'deleteProduct']);
+Route::post('api/getallactiveproduct', [ProductController::class, 'getAllActiveProduct']);
+Route::post('api/removeproductfromcart', [ProductController::class, 'removeProductFromCart']);
+
+
 
 
 Route::post('api/createorder', [OrderController::class, 'createOrder']);

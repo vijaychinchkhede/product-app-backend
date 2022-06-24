@@ -65,4 +65,55 @@ class UserController extends Controller
             return Response()->json(['status' => 'failure', 'message' => 'Invalid username or password']);
         }
     }
+
+
+    public function getAllUser(Request $request){
+        try{
+            if(!empty($request->name)){
+                $objUserData = User::where('name','LIKE',"%{$request->name}%")->get();
+            }else{
+                $objUserData = User::get();
+            }
+           
+                if($objUserData->isNotEmpty()){
+                    $content =[
+                        'status' =>200,
+                        'message' =>'data found successsfuly',
+                        'data' => $objUserData,
+                    ];
+                }else{
+                    $content =[
+                        'status' =>201,
+                        'message' =>'No data found successsfuly',
+                        'data' => '',
+                    ];
+                }
+            }catch (exception $e) {
+                $content =[
+                    'status' =>500,
+                    'message' =>$e
+                ];
+            }
+        return response()->json($content);
+    }
+
+    public function deleteUser(Request $request){
+        try{
+            $intUserId = $request->user_id;
+            $deleteUser = User::where('id',$intUserId)->delete();
+            
+            $content =[
+                'status' =>200,
+                'message' =>'User deleted successsfuly',
+                'data' => '',
+               ];
+                
+            }catch (exception $e) {
+                $content =[
+                    'status' =>500,
+                    'message' =>$e
+                ];
+            }
+        return response()->json($content);
+    }
 }

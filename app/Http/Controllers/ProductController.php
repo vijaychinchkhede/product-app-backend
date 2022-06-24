@@ -10,35 +10,44 @@ use App\Models\Cart;
 class ProductController extends Controller
 {
    
- public function getAllProduct(Request $request){
-        try{
-            $query = Product::where('status','active');
-            if(!empty($request->name)){
-                $query->where('name','LIKE',"%{$request->name}%");
-            }
-            $product_data = $query->get();
-                if($product_data->isNotEmpty()){
-                    $content =[
-                    'status' =>200,
-                    'message' =>'data found successsfuly',
-                    'data' => $product_data,
-                ];
+     public function getAllProduct(Request $request){
+            try{
+                if(!empty($request->name)){
+                   $objProductData = Product::where('name','LIKE',"%{$request->name}%")->get();
+                }else{
+                    $objProductData = Product::get();
                 }
-            }catch (exception $e) {
-                $content =[
-                    'status' =>500,
-                    'message' =>$e
-                ];
-            }
-        return response()->json($content);
-    }
+                 
+                    if($objProductData->isNotEmpty()){
+                        $content =[
+                        'status' =>200,
+                        'message' =>'Data found successsfuly',
+                        'data' => $objProductData,
+                    ];
+                    }else{
+                      $content =[
+                        'status' =>201,
+                        'message' =>'No data found successsfuly',
+                        'data' => '',
+                    ];  
+                    }
+                }catch (exception $e) {
+                    $content =[
+                        'status' =>500,
+                        'message' =>$e
+                    ];
+                }
+            return response()->json($content);
+        }
 
-    public function addProduct(Request $request){
-        try{
+        public function addProduct(Request $request){
+            try{
+                $now = Carbon::now();
                 $product = new Product;
                 $product->name = $request->name;
                 $product->price = $request->price;
                 $product->description = $request->description;
+                $product->product_add_at = $now;
                 $product->save();
 
                 $content =[
@@ -53,8 +62,8 @@ class ProductController extends Controller
                     'message' =>$e
                 ];
             }
-        return response()->json($content);
-    }
+            return response()->json($content);
+        }
 
     public function getUserCartItems(Request $request){
         try{
@@ -149,18 +158,21 @@ class ProductController extends Controller
     }
     public function updateProductDetails(Request $request){
         try{
-                $product_id = $request->product_id;
-                $updateProduct = Product::find($product_id);
-                $updateProduct->name = $request->name;
-                $updateProduct->price = $request->price;
-                $updateProduct->description = $request->description;
-                $updateProduct->save();
+            $now = Carbon::now();
+            $product_id = $request->product_id;
+            $updateProduct = Product::find($product_id);
+            $updateProduct->name = $request->name;
+            $updateProduct->price = $request->price;
+            $updateProduct->description = $request->description;
+            $updateProduct->status = $request->status;
+            $updateProduct->product_updated_at = $now;
+            $updateProduct->save();
 
-                $content =[
-                    'status' =>200,
-                    'message' =>'Product updated successsfuly',
-                    'data' => '',
-                ];
+            $content =[
+                'status' =>200,
+                'message' =>'Product updated successsfuly',
+                'data' => '',
+            ];
 
             }catch (exception $e) {
                 $content =[
@@ -183,6 +195,55 @@ class ProductController extends Controller
                     'data' => '',
                 ];
 
+            }catch (exception $e) {
+                $content =[
+                    'status' =>500,
+                    'message' =>$e
+                ];
+            }
+        return response()->json($content);
+    }
+
+    public function getAllActiveProduct(Request $request){
+        try{
+            $query = Product::where('status','active');
+            if(!empty($request->name)){
+                $query->where('name','LIKE',"%{$request->name}%");
+            }
+            $objProductData = $query->get();
+                if($objProductData->isNotEmpty()){
+                    $content =[
+                        'status' =>200,
+                        'message' =>'data found successsfuly',
+                        'data' => $objProductData,
+                    ];
+                }else{
+                    $content =[
+                        'status' =>201,
+                        'message' =>'No data found successsfuly',
+                        'data' => '',
+                    ];
+                }
+            }catch (exception $e) {
+                $content =[
+                    'status' =>500,
+                    'message' =>$e
+                ];
+            }
+        return response()->json($content);
+    }
+    public function removeProductFromCart(Request $request){
+        try{
+            $intProductId = $request->product_id;
+            $intUserId = $request->user_id;
+            $deleteProduct = Cart::where('product_id',$intProductId)->where('user_id',$intUserId)->delete();
+            
+            $content =[
+                'status' =>200,
+                'message' =>'Product has been removed successsfuly',
+                'data' => '',
+               ];
+                
             }catch (exception $e) {
                 $content =[
                     'status' =>500,
