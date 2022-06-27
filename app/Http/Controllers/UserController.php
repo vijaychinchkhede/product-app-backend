@@ -35,7 +35,7 @@ class UserController extends Controller
             'created_at' => $now,
             'status' => 'active',
         ]);
-        return Response()->json(['status' => '200', 'message' => 'Successful..!']);
+        return Response()->json(['status' => '200', 'message' => 'User has been register successsfuly..!']);
     }
 
     public function login (Request $request){
@@ -84,7 +84,7 @@ class UserController extends Controller
                 }else{
                     $content =[
                         'status' =>201,
-                        'message' =>'No data found successsfuly',
+                        'message' =>'No data found',
                         'data' => '',
                     ];
                 }

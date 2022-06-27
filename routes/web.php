@@ -39,12 +39,18 @@ Route::post('api/updateproductdetails', [ProductController::class, 'updateProduc
 Route::post('api/deleteproduct', [ProductController::class, 'deleteProduct']);
 Route::post('api/getallactiveproduct', [ProductController::class, 'getAllActiveProduct']);
 Route::post('api/removeproductfromcart', [ProductController::class, 'removeProductFromCart']);
+Route::put('api/updatecartproductquantity', [ProductController::class, 'updateCartProductQuantity']);
+
 
 
 
 
 Route::post('api/createorder', [OrderController::class, 'createOrder']);
 Route::post('api/getallorderofuser', [OrderController::class, 'getAllOrderOfUser']);
+Route::post('api/getalluserorder', [OrderController::class, 'getAllUserOrder']);
+Route::put('api/updateorderstatus', [OrderController::class, 'updateOrderStatus']);
+
+
 
 
  
