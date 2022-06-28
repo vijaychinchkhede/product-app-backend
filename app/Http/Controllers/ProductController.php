@@ -12,8 +12,16 @@ class ProductController extends Controller
 
    public function getAllProduct(Request $request){
     try{
-        if(!empty($request->name)){
-         $objProductData = Product::where('name','LIKE',"%{$request->name}%")->get();
+        if(!empty($request->all())){
+            if(!empty($request->name) && empty($request->category)){
+              $objProductData = Product::where('name','LIKE',"%{$request->name}%")->get();   
+            }else if(empty($request->name) && !empty($request->category)){
+              $objProductData = Product::where('category_id',$request->category)->get();   
+            }else if(!empty($request->name) && !empty($request->category)){
+                $objProductData = Product::where('name','LIKE',"%{$request->name}%")->where('category_id',$request->category)->get();
+            }else{
+               $objProductData = Product::get(); 
+            }
      }else{
         $objProductData = Product::get();
     }
@@ -48,6 +56,8 @@ public function addProduct(Request $request){
         $product->price = $request->price;
         $product->description = $request->description;
         $product->product_add_at = $now;
+        $product->category_id = $request->category;
+        $product->subcategory_id = 0;
         $product->save();
 
         $content =[
@@ -210,6 +220,10 @@ public function getAllActiveProduct(Request $request){
         if(!empty($request->name)){
             $query->where('name','LIKE',"%{$request->name}%");
         }
+        if(!empty($request->category)){
+            $query->where('category_id',$request->category);
+        }
+
         $objProductData = $query->get();
         if($objProductData->isNotEmpty()){
             $content =[
