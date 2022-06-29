@@ -14,17 +14,17 @@ class ProductController extends Controller
     try{
         if(!empty($request->all())){
             if(!empty($request->name) && empty($request->category)){
-              $objProductData = Product::where('name','LIKE',"%{$request->name}%")->get();   
+              $objProductData = Product::where('name','LIKE',"%{$request->name}%")->orderBy('id', 'desc')->get();   
             }else if(empty($request->name) && !empty($request->category)){
-              $objProductData = Product::where('category_id',$request->category)->get();   
+              $objProductData = Product::where('category_id',$request->category)->orderBy('id', 'desc')->get();   
             }else if(!empty($request->name) && !empty($request->category)){
-                $objProductData = Product::where('name','LIKE',"%{$request->name}%")->where('category_id',$request->category)->get();
+                $objProductData = Product::where('name','LIKE',"%{$request->name}%")->where('category_id',$request->category)->orderBy('id', 'desc')->get();
             }else{
-               $objProductData = Product::get(); 
+               $objProductData = Product::orderBy('id', 'desc')->get(); 
             }
-     }else{
-        $objProductData = Product::get();
-    }
+         }else{
+            $objProductData = Product::orderBy('id', 'desc')->get();
+        }
 
     if($objProductData->isNotEmpty()){
         $content =[
@@ -216,7 +216,7 @@ public function deleteProduct(Request $request){
 
 public function getAllActiveProduct(Request $request){
     try{
-        $query = Product::where('status','active');
+        $query = Product::where('status','active')->orderBy('id', 'desc');
         if(!empty($request->name)){
             $query->where('name','LIKE',"%{$request->name}%");
         }

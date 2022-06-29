@@ -116,4 +116,77 @@ class UserController extends Controller
             }
         return response()->json($content);
     }
+
+    public function getUserDetailsByID(Request $request){
+        try{
+             $objUserData = User::where('id',$request->user_id)->first();
+               if($objUserData){
+                    $content =[
+                        'status' =>200,
+                        'message' =>'Data found successsfuly',
+                        'data' => $objUserData,
+                    ];
+                }else{
+                    $content =[
+                        'status' =>201,
+                        'message' =>'No data found',
+                        'data' => '',
+                    ];
+                }
+            }catch (exception $e) {
+                $content =[
+                    'status' =>500,
+                    'message' =>$e->message
+                ];
+            }
+        return response()->json($content);
+    }
+
+    public function updateUserDetails(Request $request){
+        try{
+             $now = Carbon::now();
+             $objUpdateUser = User::find($request->user_id);
+             $objUpdateUser->name = $request->name;
+             $objUpdateUser->email = $request->email;
+             $objUpdateUser->mobile_number = $request->mobile_number;
+             $objUpdateUser->type = $request->type;
+             $objUpdateUser->updated_at = $now;
+             $objUpdateUser->save();  
+
+               $content =[
+                        'status' =>200,
+                        'message' =>'User updated successsfuly',
+                        'data' => '',
+                    ];
+                
+            }catch (exception $e) {
+                $content =[
+                    'status' =>500,
+                    'message' =>$e->message
+                ];
+            }
+        return response()->json($content);
+    }
+
+    public function updateUserStatus(Request $request){
+        try{
+             $now = Carbon::now();
+             $objUpdateUser = User::find($request->user_id);
+             $objUpdateUser->status = $request->status;
+             $objUpdateUser->updated_at = $now;
+             $objUpdateUser->save();  
+             $content =[
+                'status' =>200,
+                'message' =>'User status updated successsfuly',
+                'data' => '',
+               ];
+                
+            }catch (exception $e) {
+                $content =[
+                    'status' =>500,
+                    'message' =>$e->message
+                ];
+            }
+        return response()->json($content);
+    }
 }
