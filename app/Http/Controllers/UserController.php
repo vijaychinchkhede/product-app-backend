@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 
 
 class UserController extends Controller
@@ -189,4 +190,60 @@ class UserController extends Controller
             }
         return response()->json($content);
     }
+
+    public function updateUserProfile(Request $request){
+        try{
+            $rules = [
+                'name' => 'required',
+                'mobile_number' => 'required',
+                'email' => 'required',
+                ];
+
+            $messages = [
+               'name.required' => 'Name is required.',
+               'mobile_number.required' => 'Mobile number is required.',
+               'email.required' => 'Email is required.',
+            ];
+           $validator = Validator::make( $request->all(), $rules, $messages );
+
+           if ( $validator->fails() ) 
+           {
+            return [
+                'status' => 201, 
+                'message' => $validator->errors(),
+                ];
+            }
+
+            // $name = $request->file('file');
+            // if ($request->hasFile('file')) {
+            //    $image = $request->file('file');
+            //    $filename = $image->getClientOriginalName();
+            //    // $fileUrl = Storage::disk('public')->put('image', $image);
+            //    $path = Storage::putFileAs('photos', new File('D:\product-app\product-app\public'), 'photo.jpg');
+
+            // }
+          
+            $now = Carbon::now();
+            $objUpdateUserProfile = User::find($request->user_id);
+            $objUpdateUserProfile->name = $request->name;
+            $objUpdateUserProfile->email = $request->email;
+            $objUpdateUserProfile->mobile_number = $request->mobile_number;
+            $objUpdateUserProfile->updated_at = $now;
+            $objUpdateUserProfile->save();  
+
+            $content =[
+                'status' =>200,
+                'message' =>'User profile has been updated successsfuly',
+                'data' => '',
+            ];
+
+            }catch (exception $e) {
+                $content =[
+                    'status' =>500,
+                    'message' =>$e
+                ];
+            }
+            return response()->json($content);
+
+        }
 }

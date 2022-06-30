@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use App\Models\Product;
 use Carbon\Carbon;
 use App\Models\Cart;
+
 
 class ProductController extends Controller
 {
@@ -293,5 +295,48 @@ public function getAllActiveProduct(Request $request){
             ];
         }
         return response()->json($content);
+    }
+
+    public function updateProductStatus(Request $request){
+        try{
+            $rules = [
+            'product_id' => 'required',
+            'status' => 'required',
+            ];
+
+            $messages = [
+                 'name.required' => 'Product id is required.',
+                 'status.required' => 'Status is required.',
+            ];
+            $validator = Validator::make( $request->all(), $rules, $messages );
+
+            if ( $validator->fails() ) 
+            {
+                return [
+                    'status' => 201, 
+                    'message' => $validator->errors(),
+                ];
+            }
+
+            $now = Carbon::now();
+            $objUpdateProductStatus = Product::find($request->product_id);
+            $objUpdateProductStatus->status = $request->status;
+            $objUpdateProductStatus->product_updated_at = $now;
+            $objUpdateProductStatus->save();
+
+            $content =[
+                'status' =>200,
+                'message' =>'Product status has been updated successsfuly',
+                'data' => '',
+            ];
+
+        }catch (exception $e) {
+            $content =[
+                'status' =>500,
+                'message' =>$e
+            ];
+        }
+        return response()->json($content);
+
     }
 }
