@@ -71,6 +71,8 @@ class OrderController extends Controller
                $query->where('name','LIKE',"%{$request->name}%")->get();
             }
             $query->select('user_orders.id as order_id','user_orders.products','user_orders.amount_paid','user_orders.status','users.name','users.id as user_id');
+            $total = $query->count();
+            $query->simplePaginate(10);
             $objOrderData = $query->get();
 
             if($objOrderData->isNotEmpty()){
@@ -78,6 +80,7 @@ class OrderController extends Controller
                     'status' =>200,
                     'message' =>'Data found successsfuly',
                     'data' => $objOrderData,
+                    'count' => $total,
                 ];
             }else{
                 $content =[

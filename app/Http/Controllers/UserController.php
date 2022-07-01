@@ -71,9 +71,15 @@ class UserController extends Controller
     public function getAllUser(Request $request){
         try{
             if(!empty($request->name)){
-                $objUserData = User::where('name','LIKE',"%{$request->name}%")->get();
+                $query = User::where('name','LIKE',"%{$request->name}%");
+                $total = $query->count();
+                $query->simplePaginate(10);
+                $objUserData = $query->get();
             }else{
-                $objUserData = User::get();
+                $query = User::orderBy('id', 'asc');
+                $total = $query->count();
+                $query->simplePaginate(10);
+                $objUserData = $query->get();
             }
            
                 if($objUserData->isNotEmpty()){
@@ -81,6 +87,7 @@ class UserController extends Controller
                         'status' =>200,
                         'message' =>'data found successsfuly',
                         'data' => $objUserData,
+                        'count' => $total,
                     ];
                 }else{
                     $content =[

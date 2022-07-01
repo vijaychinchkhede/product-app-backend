@@ -16,13 +16,26 @@ class ProductController extends Controller
     try{
         if(!empty($request->all())){
             if(!empty($request->name) && empty($request->category)){
-              $objProductData = Product::where('name','LIKE',"%{$request->name}%")->orderBy('id', 'desc')->get();   
+              $query = Product::where('name','LIKE',"%{$request->name}%")->orderBy('id', 'desc');
+              $total = $query->count();
+              $query->simplePaginate(4);
+              $objProductData = $query->get();   
             }else if(empty($request->name) && !empty($request->category)){
-              $objProductData = Product::where('category_id',$request->category)->orderBy('id', 'desc')->get();   
+              $query = Product::where('category_id',$request->category)->orderBy('id', 'desc');
+              $total = $query->count();
+              $query->simplePaginate(4);
+              $objProductData = $query->get();   
+
             }else if(!empty($request->name) && !empty($request->category)){
-                $objProductData = Product::where('name','LIKE',"%{$request->name}%")->where('category_id',$request->category)->orderBy('id', 'desc')->get();
+                $query = Product::where('name','LIKE',"%{$request->name}%")->where('category_id',$request->category)->orderBy('id', 'desc');
+                $total = $query->count();
+              $query->simplePaginate(4);
+              $objProductData = $query->get();   
             }else{
-               $objProductData = Product::orderBy('id', 'desc')->get(); 
+               $query = Product::orderBy('id', 'desc');
+               $total = $query->count();
+              $query->simplePaginate(4);
+              $objProductData = $query->get(); 
             }
          }else{
             $objProductData = Product::orderBy('id', 'desc')->get();
@@ -33,6 +46,7 @@ class ProductController extends Controller
             'status' =>200,
             'message' =>'Data found successsfuly',
             'data' => $objProductData,
+            'count' => $total,
         ];
     }else{
       $content =[
@@ -225,13 +239,16 @@ public function getAllActiveProduct(Request $request){
         if(!empty($request->category)){
             $query->where('category_id',$request->category);
         }
-
+        $total = $query->count();
+        // $query->perPage
+        $query->simplePaginate(4);
         $objProductData = $query->get();
         if($objProductData->isNotEmpty()){
             $content =[
                 'status' =>200,
                 'message' =>'Data found successsfuly',
                 'data' => $objProductData,
+                'count' => $total,
             ];
         }else{
             $content =[
