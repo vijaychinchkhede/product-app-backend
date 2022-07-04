@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Order;
 use Carbon\Carbon;
 use App\Models\Cart;
+use Mail;
 
 class OrderController extends Controller
 {
@@ -22,10 +23,9 @@ class OrderController extends Controller
 
             $deleteCartProduct = Cart::where('user_id',$request->user_id)->delete();
 
-
             $content =[
                 'status' =>200,
-                'message' =>'Order created successsfuly',
+                'message' =>'Order created successfuly',
                 'data' => '',
             ];
 
@@ -43,7 +43,7 @@ class OrderController extends Controller
             if($order_data->isNotEmpty()){
                 $content =[
                     'status' =>200,
-                    'message' =>'Data found successsfuly',
+                    'message' =>'Data found successfuly',
                     'data' => $order_data,
                 ];
             }else{
@@ -78,7 +78,7 @@ class OrderController extends Controller
             if($objOrderData->isNotEmpty()){
                 $content =[
                     'status' =>200,
-                    'message' =>'Data found successsfuly',
+                    'message' =>'Data found successfuly',
                     'data' => $objOrderData,
                     'count' => $total,
                 ];
@@ -108,7 +108,7 @@ class OrderController extends Controller
             
                 $content =[
                     'status' =>200,
-                    'message' =>'Order status updated successsfuly',
+                    'message' =>'Order status updated successfuly',
                     'data' => '',
                 ];
            
@@ -119,5 +119,21 @@ class OrderController extends Controller
             ];
         }
         return response()->json($content);
+    }
+
+    public function sendEmail()
+    {
+        $data['title'] = " Your order has been created successfuly !!!";
+ 
+        Mail::send('emails.email', $data, function($message) {
+            $message->to('vijayc79651@gmail.com', 'Vijay')
+                    ->subject('Product-Cart Order');
+        });
+ 
+        if (Mail::failures()) {
+           return response()->Fail('Sorry! Please try again latter');
+         }else{
+           return response()->success('Great! Successfully send in your mail');
+         }
     }
 }

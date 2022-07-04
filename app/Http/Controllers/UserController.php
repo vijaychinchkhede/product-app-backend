@@ -85,7 +85,7 @@ class UserController extends Controller
                 if($objUserData->isNotEmpty()){
                     $content =[
                         'status' =>200,
-                        'message' =>'data found successsfuly',
+                        'message' =>'data found successfuly',
                         'data' => $objUserData,
                         'count' => $total,
                     ];
@@ -112,7 +112,7 @@ class UserController extends Controller
             
             $content =[
                 'status' =>200,
-                'message' =>'User deleted successsfuly',
+                'message' =>'User deleted successfuly',
                 'data' => '',
                ];
                 
@@ -131,7 +131,7 @@ class UserController extends Controller
                if($objUserData){
                     $content =[
                         'status' =>200,
-                        'message' =>'Data found successsfuly',
+                        'message' =>'Data found successfuly',
                         'data' => $objUserData,
                     ];
                 }else{
@@ -163,7 +163,7 @@ class UserController extends Controller
 
                $content =[
                         'status' =>200,
-                        'message' =>'User updated successsfuly',
+                        'message' =>'User updated successfuly',
                         'data' => '',
                     ];
                 
@@ -185,7 +185,7 @@ class UserController extends Controller
              $objUpdateUser->save();  
              $content =[
                 'status' =>200,
-                'message' =>'User status updated successsfuly',
+                'message' =>'User status updated successfuly',
                 'data' => '',
                ];
                 
@@ -240,7 +240,7 @@ class UserController extends Controller
 
             $content =[
                 'status' =>200,
-                'message' =>'User profile has been updated successsfuly',
+                'message' =>'User profile has been updated successfuly',
                 'data' => '',
             ];
 

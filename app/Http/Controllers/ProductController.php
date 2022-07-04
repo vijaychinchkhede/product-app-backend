@@ -44,7 +44,7 @@ class ProductController extends Controller
     if($objProductData->isNotEmpty()){
         $content =[
             'status' =>200,
-            'message' =>'Data found successsfuly',
+            'message' =>'Data found successfuly',
             'data' => $objProductData,
             'count' => $total,
         ];
@@ -78,7 +78,7 @@ public function addProduct(Request $request){
 
         $content =[
             'status' =>200,
-            'message' =>'Product updated successsfuly',
+            'message' =>'Product updated successfuly',
             'data' => '',
         ];
 
@@ -107,7 +107,7 @@ public function getUserCartItems(Request $request){
         if($cart_data->isNotEmpty()){
             $content =[
                 'status' =>200,
-                'message' =>'Data found successsfuly',
+                'message' =>'Data found successfuly',
                 'data' => $cart_data,
             ];
         }else{
@@ -144,7 +144,7 @@ public function addToCart(Request $request){
 
         $content =[
             'status' =>200,
-            'message' =>'Item added to cart successsfuly',
+            'message' =>'Item added to cart successfuly',
             'data' => '',
         ];
 
@@ -163,7 +163,7 @@ public function getProductDetailsById(Request $request){
         if(!empty($product_data)){
             $content =[
                 'status' =>200,
-                'message' =>'Data found successsfuly',
+                'message' =>'Data found successfuly',
                 'data' => $product_data,
             ];
         }else{
@@ -196,7 +196,7 @@ public function updateProductDetails(Request $request){
 
         $content =[
             'status' =>200,
-            'message' =>'Product updated successsfuly',
+            'message' =>'Product updated successfuly',
             'data' => '',
         ];
 
@@ -217,7 +217,7 @@ public function deleteProduct(Request $request){
 
         $content =[
             'status' =>200,
-            'message' =>'Product has been deleted successsfuly',
+            'message' =>'Product has been deleted successfuly',
             'data' => '',
         ];
 
@@ -246,7 +246,7 @@ public function getAllActiveProduct(Request $request){
         if($objProductData->isNotEmpty()){
             $content =[
                 'status' =>200,
-                'message' =>'Data found successsfuly',
+                'message' =>'Data found successfuly',
                 'data' => $objProductData,
                 'count' => $total,
             ];
@@ -273,7 +273,7 @@ public function getAllActiveProduct(Request $request){
 
             $content =[
                 'status' =>200,
-                'message' =>'Product has been removed successsfuly',
+                'message' =>'Product has been removed successfuly',
                 'data' => '',
             ];
 
@@ -301,7 +301,7 @@ public function getAllActiveProduct(Request $request){
 
             $content =[
                 'status' =>200,
-                'message' =>'Product quantity has been updated successsfuly',
+                'message' =>'Product quantity has been updated successfuly',
                 'data' => '',
             ];
 
@@ -343,7 +343,7 @@ public function getAllActiveProduct(Request $request){
 
             $content =[
                 'status' =>200,
-                'message' =>'Product status has been updated successsfuly',
+                'message' =>'Product status has been updated successfuly',
                 'data' => '',
             ];
 
