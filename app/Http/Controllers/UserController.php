@@ -58,6 +58,7 @@ class UserController extends Controller
                     'name' => $login->name,
                     'email' => $login->email,
                     'userType' => $login->type,
+                    'email_status' => !empty($login->email_verified_at) ? 1:0,
                 );
                 $randomString = Str::random(16);
                 $userToken = User::where('id',$login->id)->update(['token'=>$randomString]);
@@ -127,7 +128,7 @@ class UserController extends Controller
 
     public function getUserDetailsByID(Request $request){
         try{
-             $objUserData = User::where('id',$request->user_id)->first();
+             $objUserData = User::select('id','name','email','email_verified_at','encrypted_password','password as profile_password','mobile_number','status','type','token')->where('id',$request->user_id)->first();
                if($objUserData){
                     $content =[
                         'status' =>200,
@@ -235,6 +236,8 @@ class UserController extends Controller
             $objUpdateUserProfile->name = $request->name;
             $objUpdateUserProfile->email = $request->email;
             $objUpdateUserProfile->mobile_number = $request->mobile_number;
+            $objUpdateUserProfile->password = $request->password;
+            $objUpdateUserProfile->encrypted_password =Hash::make($request->password);
             $objUpdateUserProfile->updated_at = $now;
             $objUpdateUserProfile->save();  
 
@@ -253,4 +256,24 @@ class UserController extends Controller
             return response()->json($content);
 
         }
+
+        public function logoutUser(Request $request){
+        try{
+             $objUser = User::find($request->user_id);
+             $objUser->token = null;
+             $objUser->save();  
+             $content =[
+                'status' =>200,
+                'message' =>'User status updated successfuly',
+                'data' => '',
+               ];
+                
+            }catch (exception $e) {
+                $content =[
+                    'status' =>500,
+                    'message' =>$e->message
+                ];
+            }
+        return response()->json($content);
+    }
 }

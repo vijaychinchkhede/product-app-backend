@@ -35,9 +35,11 @@ Route::middleware([Authenticate::class])->group(function(){
 	Route::post('api/updateuserdetails', [UserController::class, 'updateUserDetails']);
 	Route::put('api/updateuserstatus', [UserController::class, 'updateUserStatus']);
 	Route::post('api/updateuserprofile', [UserController::class, 'updateUserProfile']);
+	Route::post('api/logoutuser', [UserController::class, 'logoutUser']);
 	
 
 	// ************************** Product Controller **************************
+	
 	Route::post('api/getallproduct', [ProductController::class, 'getAllProduct']);
 	Route::post('api/addproduct', [ProductController::class, 'addProduct']);
 	Route::post('api/getusercartitems', [ProductController::class, 'getUserCartItems']);
@@ -50,10 +52,11 @@ Route::middleware([Authenticate::class])->group(function(){
 	Route::put('api/updateproductstatus', [ProductController::class, 'updateProductStatus']);
 
 	// ************************** Order Controller **************************
-	Route::post('api/createorder', [OrderController::class, 'createOrder']);
+	
 	Route::post('api/getallorderofuser', [OrderController::class, 'getAllOrderOfUser']);
 	Route::post('api/getalluserorder', [OrderController::class, 'getAllUserOrder']);
 	Route::put('api/updateorderstatus', [OrderController::class, 'updateOrderStatus']);
+	Route::post('api/createorder', [OrderController::class, 'createOrder']);
 
 
 });

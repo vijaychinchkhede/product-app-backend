@@ -8,20 +8,33 @@ use Carbon\Carbon;
 use App\Models\Cart;
 use Mail;
 
+
 class OrderController extends Controller
 {
     public function createOrder(Request $request){
         try{
+         
             $now = Carbon::now();
             $order = new Order;
             $order->user_id = $request->user_id;
-            $order->product_ids = implode(',', $request->product_ids);
-            $order->products = implode(',', $request->products);
+            $order->product_ids = $request->product_ids;
+            $order->products = $request->products;
             $order->amount_paid = $request->amount_paid;
             $order->order_at = $now;
             $order->save();
 
             $deleteCartProduct = Cart::where('user_id',$request->user_id)->delete();
+
+            if($request->email_status == 1){
+                $data['title'] = " Your order has been created successfuly !!!";
+                $data['name'] = $request->user_name ? $request->user_name :'User' ;
+                $data['amount'] = $request->amount_paid;
+     
+                Mail::send('email', $data, function($message) {
+                    $message->to($request->email, 'Test')
+                            ->subject('Product-Cart Order');
+                });
+            }
 
             $content =[
                 'status' =>200,
