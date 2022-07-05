@@ -136,11 +136,16 @@ public function addToCart(Request $request){
             $additems->product_name = $request->product_name;
             $additems->quantity = 1;
             $additems->save();
+
         }else{
             $updateItem = Cart::find($checkproduct->id);
             $updateItem->quantity = $checkproduct->quantity + 1;
             $updateItem->save();
         }
+
+        $updateProductCartCount = Product::find($request->product_id);
+        $updateProductCartCount->product_cart_count = $updateProductCartCount->product_cart_count + 1;
+        $updateProductCartCount->save();
 
         $content =[
             'status' =>200,

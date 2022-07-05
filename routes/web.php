@@ -6,6 +6,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\OrderController;
 use App\Http\Middleware\Authenticate;
+use App\Http\Controllers\CommonController;
 
 /*
 |--------------------------------------------------------------------------
@@ -58,6 +59,10 @@ Route::middleware([Authenticate::class])->group(function(){
 	Route::put('api/updateorderstatus', [OrderController::class, 'updateOrderStatus']);
 	Route::post('api/createorder', [OrderController::class, 'createOrder']);
 
+	// ************************** Common Controller **************************
+
+	Route::post('api/getdashboardcarddata', [CommonController::class, 'getDashboardCardData']);
+	
 
 });
 
